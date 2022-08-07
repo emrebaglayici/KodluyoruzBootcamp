@@ -1,9 +1,12 @@
 package Week1.Example;
 
+import java.text.SimpleDateFormat;
+
 public class Power {
     int base;
     int power;
     int value;
+
 
     public Power(int base,int power){
         this.base=base;
@@ -17,6 +20,7 @@ public class Power {
     }
 
     public static void main(String[] args) {
+
         Power p=new Power(2,2);
         System.out.println(p.value);
     }
