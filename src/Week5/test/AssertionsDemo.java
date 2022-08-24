@@ -3,10 +3,12 @@ package Week5.test;
 import Week5.Calculator;
 import Week5.Person;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.*;
 
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
-
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AssertionsDemo {
@@ -99,9 +101,57 @@ public class AssertionsDemo {
         });
     }
 
+    @Test
+    void testOnlyOnCiServer(){
+        assumeTrue("CI".equals(System.getenv("ENV")),
+                ()-> "Aborting test:not on developer workstation");
+    }
 
+    @Test
+    void testInAllEnvironments(){
+        assumingThat("CI".equals(System.getenv("ENV")),
+                ()->{
+            assertEquals(2,Calculator.divide(4,2));
+                });
+    }
 
     public static String greetings(){
         return "Hello";
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "os.arch", matches = ".*64.*")
+    void onlyOn64BitArchitectures() {
+        // ...
+    }
+
+    @Test
+    @DisabledIfSystemProperty(named = "ci-server", matches = "true")
+    void notOnCiServer() {
+        // ...
+    }
+
+    @Test
+    @EnabledIfEnvironmentVariable(named = "ENV", matches = "staging-server")
+    void onlyOnStagingServer() {
+        // ...
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "ENV", matches = ".*development.*")
+    void notOnDeveloperWorkstation() {
+        // ...
+    }
+
+    @Test
+    @EnabledIf("customCondition")
+    void enabled(){}
+
+    @Test
+    @DisabledIf("customCondition")
+    void disabled(){}
+
+    boolean customCondition(){
+        return true;
     }
 }
