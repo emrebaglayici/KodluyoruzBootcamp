@@ -1,4 +1,4 @@
-package Week1.Week1Homework;
+package kodluyoruzDiamondHw;
 
 import java.util.Scanner;
 

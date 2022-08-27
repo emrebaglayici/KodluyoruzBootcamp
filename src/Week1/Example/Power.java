@@ -1,7 +1,5 @@
 package Week1.Example;
 
-import java.text.SimpleDateFormat;
-
 public class Power {
     int base;
     int power;
